@@ -16,8 +16,8 @@ public class TZPWiLSHA1Zad1 {
      */
     public static void main(String[] args) {
         SHA1 sha1 = new SHA1();
-        sha1.setText("test");
-        sha1.cipher();
+//        sha1.setText();
+        sha1.cipher("test");
     }
     
 }
