@@ -30,57 +30,40 @@ public class SHA1 {
     private void processTheBlock(byte[] processedBlock) {
         int[] W = new int[80];
         H = init;
-         for (int outer = 0; outer < 16; outer++) {
-                int temp = 0;
-                for (int inner = 0; inner < 4; inner++) {
-                    temp = (processedBlock[outer * 4 + inner] & 0x000000FF) << (24 - inner * 8);
-                    W[outer] = W[outer] | temp;
-                }
+        for (int outer = 0; outer < 16; outer++) {
+            int temp = 0;
+            for (int inner = 0; inner < 4; inner++) {
+                temp = (processedBlock[outer * 4 + inner] & 0x000000FF) << (24 - inner * 8);
+                W[outer] = W[outer] | temp;
             }
+        }
 
         for (int j = 16; j < 80; j++) {
             W[j] = rotateLeft(W[j - 3] ^ W[j - 8] ^ W[j - 14] ^ W[j - 16], 1);
         }
 
         int A = H[0], B = H[1], C = H[2], D = H[3], E = H[4];
-        int temp, F;
+        int temp=0, F;
 
         for (int j = 0; j < 80; j++) {
             if (j < 20) {
                 F = (B & C) | ((~B) & D);
                 temp = rotateLeft(A, 5) + F + E + K[0] + W[j];
-                System.out.println(Integer.toHexString(K[0]));
-                E = D;
-                D = C;
-                C = rotateLeft(B, 30);
-                B = A;
-                A = temp;
             } else if (j >= 20 && j < 40) {
                 F = B ^ C ^ D;
                 temp = rotateLeft(A, 5) + F + E + K[1] + W[j];
-                System.out.println(Integer.toHexString(K[1]));
-                E = D;
-                D = C;
-                C = rotateLeft(B, 30);
-                B = A;
-                A = temp;
             } else if (j >= 40 && j < 60) {
                 F = (B & C) | (B & D) | (C & D);
                 temp = rotateLeft(A, 5) + F + E + K[2] + W[j];
-                E = D;
-                D = C;
-                C = rotateLeft(B, 30);
-                B = A;
-                A = temp;
             } else if (j >= 60 && j < 80) {
                 F = B ^ C ^ D;
                 temp = rotateLeft(A, 5) + F + E + K[3] + W[j];
-                E = D;
-                D = C;
-                C = rotateLeft(B, 30);
-                B = A;
-                A = temp;
             }
+            E = D;
+            D = C;
+            C = rotateLeft(B, 30);
+            B = A;
+            A = temp;
         }
 
         H[0] += A;
@@ -91,12 +74,12 @@ public class SHA1 {
     }
 
     private void initBasicInfoAboutMessage(String message) {
-        messageInBytes = message.getBytes(); // 1 byte = 8 bit!!
-        dataLength = messageInBytes.length;
-        lastBlockBytesLength = dataLength % 64; //  dl ostatniego bloku
+        messageInBytes = message.getBytes(); // 1 bajt = 8 bit - pobranie wiadomości jako bajty
+        dataLength = messageInBytes.length; // pobranie długości wiadomości
+        lastBlockBytesLength = dataLength % 64; //  długość ostatniego bloku
         lastBlockFill = 0;
-        if (lastBlockBytesLength <= 55) { // jezeli dl ostatniego bpolu mniejsza niz 55 to wsadzimy tam 1 i 64bit wiadoamosc
-            lastBlockFill = 64 - lastBlockBytesLength;
+        if (lastBlockBytesLength <= 55) { // jezeli długość ostatniego bloku jest mniejsza
+            lastBlockFill = 64 - lastBlockBytesLength; //niz 55 bajtow to możemy dołączyć 1 i 64bit wiadoamosc
         } else { // jak nie to trzeba dopisac nwy blok
             lastBlockFill = 128 - lastBlockBytesLength;
         }
@@ -105,13 +88,16 @@ public class SHA1 {
     private byte[] fillLastBlock() {
         byte[] lastBlockFillingValue = new byte[lastBlockFill]; // tablica uzupelniajaca
         lastBlockFillingValue[0] = (byte) 0x80; // wrzucamy 1 na index 0
-        byte[] messageLengthAsByteArray = longToBytes(dataLength * 8); // pobieramy tablice dlugosci wiadomosci w bitach jako tablica bajtowa
+        // pobieramy tablice dlugosci wiadomosci w bitach jako tablica bajtowa
+        byte[] messageLengthAsByteArray = longToBytes(dataLength * 8);
 
-        for (int i = 1; i < lastBlockFillingValue.length - 1; i++) { // w petli przepisujemy dl wiadoamosci do tablicy uzupeniajacej
+        // w petli przepisujemy długość wiadoości do tablicy uzupeniajacej
+        for (int i = 1; i < lastBlockFillingValue.length - 1; i++) {
             if (i > messageLengthAsByteArray.length) {
                 break;
             }
-            lastBlockFillingValue[lastBlockFillingValue.length - i] = messageLengthAsByteArray[messageLengthAsByteArray.length - i];
+            lastBlockFillingValue[lastBlockFillingValue.length - i]
+                    = messageLengthAsByteArray[messageLengthAsByteArray.length - i];
         }
         return lastBlockFillingValue;
     }
@@ -123,7 +109,8 @@ public class SHA1 {
         byte[] output = new byte[dataLength + lastBlockFill]; // tablica wyjciowa
 
         System.arraycopy(messageInBytes, 0, output, 0, dataLength);
-        System.arraycopy(messageByteArrayFilled, 0, output, dataLength, messageByteArrayFilled.length);
+        System.arraycopy(messageByteArrayFilled, 0, output, dataLength,
+                messageByteArrayFilled.length);
 
         int blocksQuantity = output.length / 64;
         byte[] temp = new byte[64];
