@@ -18,7 +18,7 @@ public class PodpisCyfrowyRSA {
      */
     public static void main(String[] args) {
         RSA rsa = new RSA(1024);
-        String encrypted = rsa.encrypt("YARMOLIK");
+        String encrypted = rsa.encrypt("Zakodowana wiadomość");
         System.out.println(encrypted);
         System.out.println(rsa.decrypt(encrypted));
     }
