@@ -13,10 +13,8 @@ import java.security.SecureRandom;
  * @author Maciek
  */
 class RSA {
-
     int bits, gcd;
     BigInteger n, publicKeyPart, privateKeyPart;
-
     public RSA(int bits) {
         this.bits = bits;
         SecureRandom r = new SecureRandom();
@@ -31,28 +29,15 @@ class RSA {
         }
         privateKeyPart = publicKeyPart.modInverse(m);
     }
-
     public String encrypt(String message) {
         return (new BigInteger(message.getBytes())).modPow(publicKeyPart, n).toString();
     }
-
-    /**
-     * Encrypt the given plaintext message.
-     */
     public BigInteger encrypt(BigInteger message) {
         return message.modPow(publicKeyPart, n);
     }
-
-    /**
-     * Decrypt the given ciphertext message.
-     */
     public String decrypt(String message) {
         return new String((new BigInteger(message)).modPow(privateKeyPart, n).toByteArray());
     }
-
-    /**
-     * Decrypt the given ciphertext message.
-     */
     public BigInteger decrypt(BigInteger message) {
         return message.modPow(privateKeyPart, n);
     }
