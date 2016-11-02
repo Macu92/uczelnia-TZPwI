@@ -1,0 +1,15 @@
+C:\Users\Arek\Dropbox\Informatyka - II stopień\TZPwI\Pracownia\03\EC\EC\bin\Debug\EC.exe.config
+C:\Users\Arek\Dropbox\Informatyka - II stopień\TZPwI\Pracownia\03\EC\EC\obj\Debug\MainWindow.baml
+C:\Users\Arek\Dropbox\Informatyka - II stopień\TZPwI\Pracownia\03\EC\EC\obj\Debug\MainWindow.g.cs
+C:\Users\Arek\Dropbox\Informatyka - II stopień\TZPwI\Pracownia\03\EC\EC\obj\Debug\App.g.cs
+C:\Users\Arek\Dropbox\Informatyka - II stopień\TZPwI\Pracownia\03\EC\EC\obj\Debug\EC_MarkupCompile.cache
+C:\Users\Arek\Dropbox\Informatyka - II stopień\TZPwI\Pracownia\03\EC\EC\obj\Debug\EC.g.resources
+C:\Users\Arek\Dropbox\Informatyka - II stopień\TZPwI\Pracownia\03\EC\EC\obj\Debug\EC.Properties.Resources.resources
+C:\Users\Arek\Dropbox\Informatyka - II stopień\TZPwI\Pracownia\03\EC\EC\obj\Debug\EC.csproj.GenerateResource.Cache
+C:\Users\Arek\Dropbox\Informatyka - II stopień\TZPwI\Pracownia\03\EC\EC\bin\Debug\EC.exe
+C:\Users\Arek\Dropbox\Informatyka - II stopień\TZPwI\Pracownia\03\EC\EC\bin\Debug\EC.pdb
+C:\Users\Arek\Dropbox\Informatyka - II stopień\TZPwI\Pracownia\03\EC\EC\obj\Debug\EC.exe
+C:\Users\Arek\Dropbox\Informatyka - II stopień\TZPwI\Pracownia\03\EC\EC\obj\Debug\EC.pdb
+c:\Users\Arek\Dropbox\Informatyka - II stopień\TZPwI\Pracownia\03\EC\EC\obj\Debug\EC.csprojResolveAssemblyReference.cache
+I:\Studia\Magisterka\Semestr I\Techniki zapewniania poufności w internecie\Krzywe\EC\bin\Debug\EC.exe.config
+I:\Studia\Magisterka\Semestr I\Techniki zapewniania poufności w internecie\Krzywe\EC\obj\Debug\EC.pdb
