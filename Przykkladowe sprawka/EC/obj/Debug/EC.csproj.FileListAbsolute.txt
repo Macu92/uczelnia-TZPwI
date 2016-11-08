@@ -13,3 +13,16 @@ C:\Users\Arek\Dropbox\Informatyka - II stopień\TZPwI\Pracownia\03\EC\EC\obj\Deb
 c:\Users\Arek\Dropbox\Informatyka - II stopień\TZPwI\Pracownia\03\EC\EC\obj\Debug\EC.csprojResolveAssemblyReference.cache
 I:\Studia\Magisterka\Semestr I\Techniki zapewniania poufności w internecie\Krzywe\EC\bin\Debug\EC.exe.config
 I:\Studia\Magisterka\Semestr I\Techniki zapewniania poufności w internecie\Krzywe\EC\obj\Debug\EC.pdb
+C:\Users\Maciek\Documents\UCZELNIA\uczelnia-TZPwI\Przykkladowe sprawka\EC\bin\Debug\EC.exe.config
+C:\Users\Maciek\Documents\UCZELNIA\uczelnia-TZPwI\Przykkladowe sprawka\EC\obj\Debug\EC.pdb
+C:\Users\Maciek\Documents\UCZELNIA\uczelnia-TZPwI\Przykkladowe sprawka\EC\bin\Debug\EC.exe
+C:\Users\Maciek\Documents\UCZELNIA\uczelnia-TZPwI\Przykkladowe sprawka\EC\bin\Debug\EC.pdb
+C:\Users\Maciek\Documents\UCZELNIA\uczelnia-TZPwI\Przykkladowe sprawka\EC\obj\Debug\EC.csprojResolveAssemblyReference.cache
+C:\Users\Maciek\Documents\UCZELNIA\uczelnia-TZPwI\Przykkladowe sprawka\EC\obj\Debug\MainWindow.baml
+C:\Users\Maciek\Documents\UCZELNIA\uczelnia-TZPwI\Przykkladowe sprawka\EC\obj\Debug\MainWindow.g.cs
+C:\Users\Maciek\Documents\UCZELNIA\uczelnia-TZPwI\Przykkladowe sprawka\EC\obj\Debug\App.g.cs
+C:\Users\Maciek\Documents\UCZELNIA\uczelnia-TZPwI\Przykkladowe sprawka\EC\obj\Debug\EC_MarkupCompile.cache
+C:\Users\Maciek\Documents\UCZELNIA\uczelnia-TZPwI\Przykkladowe sprawka\EC\obj\Debug\EC.g.resources
+C:\Users\Maciek\Documents\UCZELNIA\uczelnia-TZPwI\Przykkladowe sprawka\EC\obj\Debug\EC.Properties.Resources.resources
+C:\Users\Maciek\Documents\UCZELNIA\uczelnia-TZPwI\Przykkladowe sprawka\EC\obj\Debug\EC.csproj.GenerateResource.Cache
+C:\Users\Maciek\Documents\UCZELNIA\uczelnia-TZPwI\Przykkladowe sprawka\EC\obj\Debug\EC.exe
