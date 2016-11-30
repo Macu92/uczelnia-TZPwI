@@ -67,7 +67,7 @@ public class ECGroup {
         List<ECPoint> kGGroup = new LinkedList<>();
         kGGroup.add(g);
         try {
-            c=1;
+            c++;
             current = doubling2(g);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -127,7 +127,9 @@ public class ECGroup {
             return p;
         } else if (p.x == q.x && (p.y == -q.y + M || (p.y == q.y) && (p.y == 0))) {
             throw new Exception("ZERO");
-        } else if (p.x != q.x && p.y != q.y) {
+        } if(p.x==q.x && p.y==q.y){
+            doubling2(p);
+        }else  {//
             int s = divideModulo(p.y - q.y, p.x - q.x, M);
             Double xr = (Math.pow(s, 2) - p.x - q.x) % M;
             if (xr < 0) {
