@@ -5,7 +5,7 @@
  */
 package krzywe.eliptyczne;
 
-import java.math.BigInteger;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,9 +20,16 @@ public class KrzyweEliptyczne {
      */
     public static void main(String[] args) {
         try {
-            for(ECPoint p : new ECGroup(10,10,23).generateGroupElemets()){
+            ECGroup group = new ECGroup(0,1,5);
+            List<ECPoint> listpkt = group.generateGroupElemets();
+            for(ECPoint p : listpkt){
                 System.out.println("POINT X:"+p.x+" y:"+p.y);
             }
+           List<ECPoint> grup = group.generateG(listpkt.get(5));
+           for(ECPoint p : grup){
+                System.out.println("Group Point X:"+p.x+" y:"+p.y);
+            }
+           System.out.println("Rzad:"+group.getC());
         } catch (Exception ex) {
             Logger.getLogger(KrzyweEliptyczne.class.getName()).log(Level.SEVERE, null, ex);
         }
