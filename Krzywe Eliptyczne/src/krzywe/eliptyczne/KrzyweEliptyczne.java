@@ -32,6 +32,7 @@ public class KrzyweEliptyczne {
                 System.out.println(i + ". POINT X:" + p.x + " y:" + p.y);
                 i++;
             }
+//            group.add2(listpkt.get(1), listpkt.get(2));
             List<ECPoint> grup = group.generateG(listpkt.get(getInt("Podaj nr punktu do generacji") - 1));
             i = 1;
             for (ECPoint p : grup) {
@@ -48,27 +49,29 @@ public class KrzyweEliptyczne {
             List<ECPoint> grup2 = group.generateG(pb);
             System.out.println("Klucz wspolny na*Pb=na*(nb*G):" + na + "*P" + pb.toString() + "=" + grup1.get(nb - 1).toString());
             System.out.println("Klucz wspolny nb*Pa=nb*(na*G):" + nb + "*P" + pa.toString() + "=" + grup2.get(na - 1).toString());
-            System.out.println("ZOBACZMY CO WYSZLo");
-
+//            System.out.println("ZOBACZMY CO WYSZLo");
+            
+            //coding
             Integer c = group.getC();
+            
+            Double randKD = Math.random()%c;
             Integer randK = 3;
             ECPoint kpoint = grup.get(randK - 1);
             int r = kpoint.x % M;
             if (r == 0) {
                 System.out.println("dupa");
             }
-            //coding
             Integer kmod = new BigInteger(randK.toString()).modInverse(new BigInteger(c.toString())).intValue();
             byte[] bytesOfMessage = "MOJ SUPER STRING".getBytes("UTF-8");
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            Integer hashMessage = new BigInteger(md.digest(bytesOfMessage)).intValue() % c;
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            Integer hashMessage = new BigInteger(md.digest(bytesOfMessage)).intValue() %c;
             Integer temp = hashMessage + na * r;
             Integer s = (kmod * temp) % c;
             ECPoint pair = new ECPoint(r, s);
 
             // decoding
             byte[] bytesOfMessage2 = "MOJ SUPER STRING".getBytes("UTF-8");
-            MessageDigest md2 = MessageDigest.getInstance("MD5");
+            MessageDigest md2 = MessageDigest.getInstance("SHA-1");
             Integer hashMessage2 = new BigInteger(md.digest(bytesOfMessage)).intValue() % c;
             Integer r2 = pair.x;
             Integer s2 = pair.y;
@@ -81,6 +84,7 @@ public class KrzyweEliptyczne {
             Integer w = new BigInteger(s2.toString()).modInverse(new BigInteger(c.toString())).intValue();
             Integer u1 = (hashMessage2*w)%c; 
             Integer u2 = (r2*w)%c;
+            
         } catch (Exception ex) {
             Logger.getLogger(KrzyweEliptyczne.class.getName()).log(Level.SEVERE, null, ex);
         }
