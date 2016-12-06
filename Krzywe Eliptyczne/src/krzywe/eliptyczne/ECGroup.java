@@ -95,7 +95,7 @@ public class ECGroup {
             throw new Exception("ZERO");
         }else if(p.x==q.x && p.y==q.y){
             return doubling2(p);
-        }else {
+        }else  {//
             int s = divideModulo(p.y - q.y, p.x - q.x, M);
             Double xr = (Math.pow(s, 2) - p.x - q.x) % M;
             if (xr < 0) {
@@ -108,7 +108,6 @@ public class ECGroup {
             return new ECPoint(xr.intValue(), yr.intValue());
         }
     }
-    
     private int divideModulo(Integer aa, Integer bb, Integer M) {
         return ((aa % M) * new BigInteger(bb.toString())
                 .modInverse(new BigInteger(M.toString()))
