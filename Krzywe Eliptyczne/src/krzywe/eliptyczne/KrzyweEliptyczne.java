@@ -50,23 +50,30 @@ public class KrzyweEliptyczne {
             System.out.println("Klucz wspolny na*Pb=na*(nb*G):" + na + "*P" + pb.toString() + "=" + grup1.get(nb - 1).toString());
             System.out.println("Klucz wspolny nb*Pa=nb*(na*G):" + nb + "*P" + pa.toString() + "=" + grup2.get(na - 1).toString());
 //            System.out.println("ZOBACZMY CO WYSZLo");
-            
+
             //coding
+            Integer s = 0;
+            int r = 0;
+            MessageDigest md;
+            byte[] bytesOfMessage;
             Integer c = group.getC();
-            
-            Double randKD = Math.random()%c;
-            Integer randK = 3;
-            ECPoint kpoint = grup.get(randK - 1);
-            int r = kpoint.x % M;
-            if (r == 0) {
-                System.out.println("dupa");
-            }
-            Integer kmod = new BigInteger(randK.toString()).modInverse(new BigInteger(c.toString())).intValue();
-            byte[] bytesOfMessage = "MOJ SUPER STRING".getBytes("UTF-8");
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            Integer hashMessage = new BigInteger(md.digest(bytesOfMessage)).intValue() %c;
-            Integer temp = hashMessage + na * r;
-            Integer s = (kmod * temp) % c;
+            do {
+                Double randKD = new Double("0");
+                Integer randK = 0;
+                do {
+                    randKD = (Math.random() * 99 + 1) % c;
+                    randK = randKD.intValue();
+                    ECPoint kpoint = grup.get(randK-1);
+                    r = kpoint.x % M;
+                } while (r == 0);
+                System.out.println("bi"+randK+" "+c);
+                Integer kmod = new BigInteger(randK.toString()).modInverse(new BigInteger(c.toString())).intValue();
+                bytesOfMessage = "MOJ SUPER STRING".getBytes("UTF-8");
+                md = MessageDigest.getInstance("SHA-1");
+                Integer hashMessage = new BigInteger(md.digest(bytesOfMessage)).intValue() % c;
+                Integer temp = hashMessage + na * r;
+                s = (kmod * temp) % c;
+            } while (s == 0);
             ECPoint pair = new ECPoint(r, s);
 
             // decoding
@@ -76,15 +83,25 @@ public class KrzyweEliptyczne {
             Integer r2 = pair.x;
             Integer s2 = pair.y;
             if (r2 < 1 || r2 > c - 1) {
-               System.out.println("dupa");
+                System.out.println("dupa");
             }
             if (s2 < 1 || s2 > c - 1) {
-               System.out.println("dupa");
+                System.out.println("dupa");
             }
             Integer w = new BigInteger(s2.toString()).modInverse(new BigInteger(c.toString())).intValue();
-            Integer u1 = (hashMessage2*w)%c; 
-            Integer u2 = (r2*w)%c;
-            
+            Integer u1 = (hashMessage2 * w) % c;
+            Integer u2 = (r2 * w) % c;
+            List<ECPoint> upa = group.generateG(pa);
+            ECPoint d;
+            if (upa.size() < u2) {
+                d = upa.get((upa.size() % u2) - 1);
+            } else {
+                d = upa.get(u2 - 1);
+            }
+            ECPoint fi = group.add2(grup.get(u1 - 1), d);
+
+            System.out.println("R:" + r + " R*:" + fi.x % c);
+
         } catch (Exception ex) {
             Logger.getLogger(KrzyweEliptyczne.class.getName()).log(Level.SEVERE, null, ex);
         }
