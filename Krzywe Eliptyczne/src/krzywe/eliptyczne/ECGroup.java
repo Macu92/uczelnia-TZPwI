@@ -93,9 +93,9 @@ public class ECGroup {
         } else if (p.x == q.x && (p.y == -q.y + M ||
                 (p.y == q.y) && (p.y == 0))) {
             throw new Exception("ZERO");
-        } if(p.x==q.x && p.y==q.y){
-            doubling2(p);
-        }else  {//
+        }else if(p.x==q.x && p.y==q.y){
+            return doubling2(p);
+        }else {
             int s = divideModulo(p.y - q.y, p.x - q.x, M);
             Double xr = (Math.pow(s, 2) - p.x - q.x) % M;
             if (xr < 0) {
@@ -107,8 +107,8 @@ public class ECGroup {
             }
             return new ECPoint(xr.intValue(), yr.intValue());
         }
-        throw new Exception("null");
     }
+    
     private int divideModulo(Integer aa, Integer bb, Integer M) {
         return ((aa % M) * new BigInteger(bb.toString())
                 .modInverse(new BigInteger(M.toString()))
