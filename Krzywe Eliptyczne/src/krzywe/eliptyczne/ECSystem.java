@@ -46,7 +46,7 @@ public class ECSystem {
                 Integer randK = 0;
                 do {
                     randKD = (Math.random() * 100) % c;
-                    randK = 5;//randKD.intValue()+1;
+                    randK = randKD.intValue()+1;
                     ECPoint kpoint = generatedGPoints.get(randK - 1);
                     r = kpoint.x % c;
                 } while (r == 0);
