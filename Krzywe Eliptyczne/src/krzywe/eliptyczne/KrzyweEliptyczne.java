@@ -46,9 +46,21 @@ public class KrzyweEliptyczne {
             int nb = getInt("Podaj liczbę(secret key B) mniejsza niż " + i);
             ECPoint pb = grup.get(nb - 1);
             List<ECPoint> grup1 = group.generateG(pa);
-            List<ECPoint> grup2 = group.generateG(pb);
-            System.out.println("Klucz wspolny na*Pb=na*(nb*G):" + na + "*P" + pb.toString() + "=" + grup1.get(nb - 1).toString());
-            System.out.println("Klucz wspolny nb*Pa=nb*(na*G):" + nb + "*P" + pa.toString() + "=" + grup2.get(na - 1).toString());
+            List<ECPoint> grup2 = group.generateG(pb); //35/25/33 19,38  //60,11,17
+            ECPoint pp;
+             if (grup1.size() < nb) {
+                pp = grup1.get((nb%(grup1.size()+1)) - 1);
+            } else {
+                pp= grup1.get(nb - 1);
+            }
+            System.out.println("Klucz wspolny na*Pb=na*(nb*G):" + na + "*P" + pb.toString() + "=" + pp.toString());
+            ECPoint pbb;
+             if (grup2.size() < na) {
+                pbb = grup2.get((na%(grup2.size()+1) ) - 1);
+            } else {
+                pbb = grup2.get(na - 1);
+            }
+            System.out.println("Klucz wspolny nb*Pa=nb*(na*G):" + nb + "*P" + pa.toString() + "=" + pbb.toString());
 //            System.out.println("ZOBACZMY CO WYSZLo");
 
             //coding
@@ -62,9 +74,9 @@ public class KrzyweEliptyczne {
                 Integer randK = 0;
                 do {
                     randKD = (Math.random() * 100) % c;
-                    randK = randKD.intValue()+1;
+                    randK = 5;//randKD.intValue()+1;
                     ECPoint kpoint = grup.get(randK-1);
-                    r = kpoint.x % M;
+                    r = kpoint.x % c;
                 } while (r == 0);
                 System.out.println("bi"+randK+" "+c);
                 Integer kmod = new BigInteger(randK.toString()).modInverse(new BigInteger(c.toString())).intValue();
@@ -83,10 +95,10 @@ public class KrzyweEliptyczne {
             Integer r2 = pair.x;
             Integer s2 = pair.y;
             if (r2 < 1 || r2 > c - 1) {
-                System.out.println("dupa");
+                System.out.println("warunek r2 niespelnoiny");
             }
             if (s2 < 1 || s2 > c - 1) {
-                System.out.println("dupa");
+                System.out.println("wrunek s2 niespelniony");
             }
             Integer w = new BigInteger(s2.toString()).modInverse(new BigInteger(c.toString())).intValue();
             Integer u1 = (hashMessage2 * w) % c;
@@ -98,6 +110,7 @@ public class KrzyweEliptyczne {
             } else {
                 d = upa.get(u2 - 1);
             }
+            System.out.println(d.toString()+" "+grup.get(u1).toString());
             ECPoint fi = group.add2(grup.get(u1 - 1), d);
 
             System.out.println("R:" + r + " R*:" + fi.x % c);
