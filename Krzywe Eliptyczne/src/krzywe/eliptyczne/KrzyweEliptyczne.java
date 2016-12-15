@@ -50,10 +50,11 @@ public class KrzyweEliptyczne {
             ECPoint pb =  ecsys.generateOpenKey(nb, grup);
             
             ECPoint userASecretKey = ecsys.generateSecretKey(na,pb,group);
-            System.out.println("Klucz wspolny na*Pb=na*(nb*G):" + na + "*P" + pb.toString() + "=" + userASecretKey.toString());
+            System.out.println("Klucz wspolny na*Pb=na*(nb*G):" + na + "*P"
+                    + pb.toString() + "=" + userASecretKey.toString());
             ECPoint userBSecretKey = ecsys.generateSecretKey(nb,pa,group);
-            System.out.println("Klucz wspolny nb*Pa=nb*(na*G):" + nb + "*P" + pa.toString() + "=" + userBSecretKey.toString());
-
+            System.out.println("Klucz wspolny nb*Pa=nb*(na*G):" + nb + "*P"
+                    + pa.toString() + "=" + userBSecretKey.toString());
 //            //sign
             ECPoint signature =  ecsys.sign("MOJ SUPER STRING", group, grup, na);
             // verify
