@@ -56,9 +56,10 @@ public class KrzyweEliptyczne {
             System.out.println("Klucz wspolny nb*Pa=nb*(na*G):" + nb + "*P"
                     + pa.toString() + "=" + userBSecretKey.toString());
 //            //sign
-            ECPoint signature =  ecsys.sign("MOJ SUPER STRING", group, grup, na);
+            ECPoint signature =  ecsys.sign("ZINIEWICZ", group, grup, na);
+              System.out.println("PODPIS: "+signature.toString());
             // verify
-            ECPoint verified = ecsys.verifySIgn("MOJ SUPER STRING", signature, group, pa, grup);
+            ECPoint verified = ecsys.verifySIgn("ZINIEWICZ", signature, group, pa, grup);
             System.out.println("R:" + signature.x + " R*:" + verified.x % group.getC());
 //
         } catch (Exception ex) {

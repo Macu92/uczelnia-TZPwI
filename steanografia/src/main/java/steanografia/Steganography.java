@@ -17,11 +17,12 @@ public class Steganography {
 	private String message;
 	private BufferedImage orginal;
 	private BufferedImage output;
+	byte[] pixels2;
 
 	public Steganography(int bitsNumber, String message, String imagePath) {
-		if (bitsNumber > 8) {
+		if (bitsNumber > 7) {
 			System.out.println("There is only 8 bits. Setting 8");
-			this.bitsNumber = 8;
+			this.bitsNumber = 7;
 		}
 		this.bitsNumber = bitsNumber;
 		this.message = message;
@@ -33,37 +34,32 @@ public class Steganography {
 		}
 	}
 
-	public void cipher() {
-		byte[] messageBytes = message.getBytes();
-		String bytesAsString = "";
-		for (byte b : messageBytes) {
-			bytesAsString += Integer.toString(b, 2);
-		}
-		int messageByteCounter = 0;
+	public void cipher(String fileNameToSave) {
+		String bytesAsString = messageToBinaryString(message);
 		Color oldOne;
-		int red;
-		int green;
-		int blue;
+		int red,green,blue,messageByteCounter = 0;
 		for (int x = 0; x < orginal.getWidth(); x++) {
 			for (int y = 0; y < orginal.getHeight(); y++) {
 				oldOne = new Color(orginal.getRGB(x, y));
 				red = oldOne.getRed();
 				for (int bitPosition = 0; bitPosition < bitsNumber; bitPosition++) {
 					if (messageByteCounter < bytesAsString.length()) {
-						red = changeByte(red, bitPosition, bytesAsString.charAt(messageByteCounter++));
+						red = changeByte(red, bitPosition,
+								bytesAsString.charAt(messageByteCounter++)) & 0xFF;
 					}
 				}
 				green = oldOne.getGreen();
 				for (int bitPosition = 0; bitPosition < bitsNumber; bitPosition++) {
 					if (messageByteCounter < bytesAsString.length()) {
-						green = changeByte(green, bitPosition, bytesAsString.charAt(messageByteCounter++));
+						green = changeByte(green, bitPosition,
+								bytesAsString.charAt(messageByteCounter++));
 					}
 				}
-
 				blue = oldOne.getBlue();
 				for (int bitPosition = 0; bitPosition < bitsNumber; bitPosition++) {
 					if (messageByteCounter < bytesAsString.length()) {
-						blue = changeByte(blue, bitPosition, bytesAsString.charAt(messageByteCounter++));
+						blue = changeByte(blue, bitPosition,
+								bytesAsString.charAt(messageByteCounter++));
 					}
 				}
 				output.setRGB(x, y, new Color(red, green, blue).getRGB());
@@ -75,35 +71,108 @@ public class Steganography {
 				break;
 			}
 		}
-		// Color c = new Color(image.getRGB(0,0));
-		// int red = c.getRed();
-		// int green = c.getGreen();
-		// int blue = c.getBlue();
-		byte[] pixels = ((DataBufferByte) orginal.getRaster().getDataBuffer()).getData();
-		byte[] pixels2 = ((DataBufferByte) output.getRaster().getDataBuffer()).getData();
 		try {
-			new ImageReader().saveImage(output);
+			new ImageReader().saveImage(output,fileNameToSave);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("There is only 8 bits. Setting 8");
+	}
+
+	public String decipher(String path) {
+		BufferedImage imageToDecode = null;
+		try {
+			imageToDecode = new ImageReader().getImage(path);
+		} catch (IOException e) {
+			System.out.println("FILE PARSING ERR");
+		}
+		String messageInBinary = "";
+		decode: {
+			for (int x = 0; x < imageToDecode.getWidth(); x++) {
+				for (int y = 0; y < imageToDecode.getHeight(); y++) {
+					Color pixColor = new Color(imageToDecode.getRGB(x, y));
+					for (int bitPosition = 0; bitPosition < bitsNumber; bitPosition++) {
+						messageInBinary += readBytes(pixColor.getRed(), bitPosition);
+					}
+					for (int bitPosition = 0; bitPosition < bitsNumber; bitPosition++) {
+						messageInBinary += readBytes(pixColor.getGreen(), bitPosition);
+					}
+					for (int bitPosition = 0; bitPosition < bitsNumber; bitPosition++) {
+						messageInBinary += readBytes(pixColor.getBlue(), bitPosition);
+					}
+					if (checkEndOffMessage(messageInBinary)) {
+						break decode;
+					}
+					;
+				}
+			}
+		}
+
+		return binaryToMessage(messageInBinary);
+	}
+
+	private boolean checkEndOffMessage(String message) {
+		if (message.length() > 13) {
+			if (message.contains("00000000000000")) {
+				return true;
+			}
+			
+		}
+		return false;
+	}
+
+	public String binaryToMessage(String messageInBinary) {
+		String stringMsg = "";
+		int val;
+		int endIndex = messageInBinary.indexOf("00000000000000");
+		messageInBinary = messageInBinary.substring(0, endIndex);
+		for (int i = 0; i * 7 < messageInBinary.length(); i++) {
+			String substring = messageInBinary.substring(i * 7, (i * 7) + 7);
+			val = Integer.parseInt(substring, 2);
+			stringMsg += (char) val;
+		}
+		return stringMsg;
+	}
+
+	public String messageToBinaryString(String message) {
+		byte[] messageBytes = message.getBytes();
+		String bytesAsString = "";
+		for (byte b : messageBytes) {
+			String converted = Integer.toString(b, 2);
+			while (converted.length() < 7) {
+				converted = "0" + converted;
+			}
+			bytesAsString += converted;
+		}
+		return bytesAsString + "00000000000000";
 	}
 
 	private int changeByte(int color, int bitPosition, char byteValue) {
 		char[] colorAsCharArray = Integer.toString(color, 2).toCharArray();
-		Character[] temp =  ArrayUtils.toObject(colorAsCharArray);
+		Character[] temp = ArrayUtils.toObject(colorAsCharArray);
 		List<Character> chars = Arrays.asList(temp);
-		chars =  new LinkedList<Character>(chars);
+		chars = new LinkedList<Character>(chars);
 		Collections.reverse(chars);
-		while(chars.size()<8){
+		while (chars.size() < 8) {
 			chars.add('0');
 		}
 		Collections.reverse(chars);
-		chars.set(chars.size() - 1 - bitPosition,'1');
-//		colorAsCharArray[colorAsCharArray.length - 1 - bitPosition] = byteValue;
+		chars.set(chars.size() - 1 - bitPosition, byteValue);
 		temp = chars.toArray(temp);
 		Integer intVal = Integer.valueOf(String.valueOf(ArrayUtils.toPrimitive(temp)), 2);
 		return intVal;
+	}
+
+	private char readBytes(int color, int bit) {
+		char[] colorAsCharArray = Integer.toString(color, 2).toCharArray();
+		Character[] temp = ArrayUtils.toObject(colorAsCharArray);
+		List<Character> chars = Arrays.asList(temp);
+		chars = new LinkedList<Character>(chars);
+		Collections.reverse(chars);
+		while (chars.size() < 8) {
+			chars.add('0');
+		}
+		Collections.reverse(chars);
+		return chars.get(chars.size() - 1 - bit);
 	}
 }

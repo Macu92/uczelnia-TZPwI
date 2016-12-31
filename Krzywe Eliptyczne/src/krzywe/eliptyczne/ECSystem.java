@@ -56,8 +56,8 @@ public class ECSystem {
                 md = MessageDigest.getInstance("SHA-1");
                 Integer hashMessage = new BigInteger(md.digest(bytesOfMessage))
                         .intValue() % c;
-                Integer temp = hashMessage + privateKey * r;
-                s = (kmod * temp) % c;
+                Integer temp =  Math.abs(hashMessage) + privateKey * r;
+                s = (kmod *temp) % c;
             } catch (Exception ex) {
                 Logger.getLogger(ECSystem.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -68,12 +68,14 @@ public class ECSystem {
     public ECPoint verifySIgn(String message, ECPoint signature, ECGroup group,
             ECPoint openPaKey, List<ECPoint> generatedGPoints) {
          ECPoint fi = null;
+          MessageDigest md;
+        Integer c = group.getC();
+        byte[] bytesOfMessage;
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            Integer c = group.getC();
-            byte[] bytesOfMessage2 = message.getBytes("UTF-8");
-            Integer hashMessage2 = new BigInteger(md.digest(bytesOfMessage2))
-                    .intValue() % c;
+            bytesOfMessage = message.getBytes("UTF-8");
+                md = MessageDigest.getInstance("SHA-1");
+                Integer hashMessage2 = new BigInteger(md.digest(bytesOfMessage))
+                        .intValue() % c;
             Integer r2 = signature.x;
             Integer s2 = signature.y;
             if (r2 < 1 || r2 > c - 1) {
@@ -84,7 +86,7 @@ public class ECSystem {
             }
             Integer w = new BigInteger(s2.toString())
                     .modInverse(new BigInteger(c.toString())).intValue();
-            Integer u1 = (hashMessage2 * w) % c;
+            Integer u1 = (Math.abs(hashMessage2) * w) % c;
             Integer u2 = (r2 * w) % c;
             List<ECPoint> upa = group.generateG(openPaKey);
             ECPoint d;
@@ -93,8 +95,8 @@ public class ECSystem {
             } else {
                 d = upa.get(u2 - 1);
             }
-            System.out.println(d.toString() +
-                    " " + generatedGPoints.get(u1).toString());
+//            System.out.println(d.toString() +
+//                    " " + generatedGPoints.get(u1).toString());
             fi = group.add2(generatedGPoints.get(u1 - 1), d);
         } catch (Exception ex) {
             Logger.getLogger(ECSystem.class.getName())

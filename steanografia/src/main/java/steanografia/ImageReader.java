@@ -3,9 +3,6 @@ package steanografia;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
 
@@ -27,12 +24,11 @@ public class ImageReader {
 		}
 	}
 	
-	public void saveImage(BufferedImage img) throws IOException{
+	public void saveImage(BufferedImage img,String name) throws IOException{
 		try {
-		    // retrieve image
 		    BufferedImage bi = img;
-		    File outputfile = new File("saved.jpg");
-		    ImageIO.write(bi, "jpg", outputfile);
+		    File outputfile = new File(name+".png");
+		    ImageIO.write(bi, "png", outputfile);
 		} catch (IOException e) {
 			System.err.println("Blad zapisu obrazka");
 			throw e;
