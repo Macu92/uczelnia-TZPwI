@@ -15,10 +15,13 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String file = new FileLoader().readFile("Student.java");
+        String file = new FileLoader().readFile("Puppy.java");
         Obfuscator ob = new Obfuscator();
-        System.out.println(ob.deleteComments(file));
-        System.out.println(ob.deleteWhiteSpaces(file));
+//        System.out.println(ob.deleteComments(file));
+//        System.out.println(ob.deleteWhiteSpaces(file));
+//        System.out.println(ob.changeIdentifiers(file));
+        
+        System.out.println(ob.deleteWhiteSpaces(ob.changeIdentifiers(ob.deleteComments(file))));
     }
 
 }
