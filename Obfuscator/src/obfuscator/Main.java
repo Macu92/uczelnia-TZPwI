@@ -21,7 +21,7 @@ public class Main {
 //        System.out.println(ob.deleteWhiteSpaces(file));
 //        System.out.println(ob.changeIdentifiers(file));
         
-        System.out.println(ob.deleteWhiteSpaces(ob.changeIdentifiers(ob.deleteComments(file))));
+        FileLoader.writeStringToFile(ob.deleteWhiteSpaces(ob.changeIdentifiers(ob.deleteComments(file))));
     }
 
 }

@@ -6,7 +6,10 @@
 package obfuscator;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +26,14 @@ public class FileLoader {
         } catch (IOException ex) {
             Logger.getLogger(FileLoader.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }
+    }
+
+    static void writeStringToFile(String data) {
+        try (PrintStream out = new PrintStream(new FileOutputStream("zaciemniony.java"))) {
+            out.print(data);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FileLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
